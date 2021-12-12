@@ -2,6 +2,8 @@
 
 A simple and complete native progress bar.
 
+![Progress bar in game](progress_bar.gif)
+
 ## Usage
 
 To use the progress bar you just have to call the event `progress:bar:start` with the following parameters:
