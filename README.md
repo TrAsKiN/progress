@@ -16,12 +16,30 @@ To use the progress bar you just have to call the function `exports.progress:tim
 
 You can cancel a progress bar with the function `exports.progress:cancelBar()` with the ID returned by the previous function as parameter.
 
-## Example
+### Example
 
 ```lua
 local myBar = exports.progress:timerBar(5000, "My Progress Bar", true, 'myCallbackEvent', {any = data, you = want})
 Wait(2000)
 exports.progress:cancelBar(myBar)
+```
+
+## Custom bars
+
+Customize your bars with your values and the following functions:
+
+- `exports.progress:addBar(min, max, state, params)`
+- `exports.progress:updateBar(barId, state)`
+- `exports.progress:removeBar(barId)`
+
+### Example
+
+```lua
+local myBar = exports.progress:addBar(0, 6, 1, {title = "My Bar"})
+-- waiting or handling an event
+exports.progress:updateBar(myBar, 2)
+-- waiting or other
+exports.progress:removeBar(myBar)
 ```
 
 ## License

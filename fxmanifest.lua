@@ -10,3 +10,9 @@ client_scripts {
     'client/manager.lua',
     'client/progress.lua',
 }
+
+exports {
+    'addBar',
+    'updateBar',
+    'removeBar',
+}
