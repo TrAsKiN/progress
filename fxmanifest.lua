@@ -7,5 +7,6 @@ description 'A native progress bar for FiveM'
 lua54 'yes'
 
 client_scripts {
+    'client/manager.lua',
     'client/progress.lua',
 }
