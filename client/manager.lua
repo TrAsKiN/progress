@@ -2,10 +2,20 @@ local guid = 1
 local barsData = {}
 local barsOrdered = {}
 
+local function doesBarExist(id)
+    for barId, _ in pairs(barsData) do
+        if barId == id then
+            return true
+        end
+    end
+    return false
+end
+
 local function getId()
     local newId = guid
-    guid = guid + 1
-    -- todo: check if id already exists
+    while doesBarExist(guid + 1) do
+        guid = guid + 1
+    end
     return newId
 end
 
@@ -35,7 +45,7 @@ CreateThread(function ()
                 DrawRect(0.5, height, barWidth, 0.0175, 0, 0, 0, 100)
                 DrawRect(0.5, height, barWidth, 0.01, 255, 255, 255, 55)
                 DrawRect(0.5 - width / 2, height, barWidth - width, 0.01, 255, 255, 255, 170)
-                if barData.params.title then
+                if barData.params and barData.params.title then
                     drawText(barData.params.title, vector2((0.5 - barWidth / 2) - 0.0005, height - 0.027), {r = 0, b = 0, g = 0, a = 100})
                     drawText(barData.params.title, vector2((0.5 - barWidth / 2) - 0.0014, height - 0.029))
                 end
@@ -60,15 +70,22 @@ function addBar(min, max, state, params)
 end
 
 function updateBar(barId, state)
-    barsData[barId].state = state
+    if doesBarExist(barId) then
+        barsData[barId].state = state
+        return true
+    end
+    return false
 end
 
 function removeBar(barId)
-    barsData[barId] = nil
-    for position, barIdToRemove in ipairs(barsOrdered) do
-        if barIdToRemove == barId then
-            table.remove(barsOrdered, position)
-            break
+    if doesBarExist(barId) then
+        barsData[barId] = nil
+        for position, barIdToRemove in ipairs(barsOrdered) do
+            if barIdToRemove == barId then
+                table.remove(barsOrdered, position)
+                return true
+            end
         end
     end
+    return false
 end
