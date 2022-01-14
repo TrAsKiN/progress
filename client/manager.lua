@@ -13,8 +13,9 @@ end
 
 local function getId()
     local newId = guid
-    while doesBarExist(guid + 1) do
+    while doesBarExist(newId) do
         guid = guid + 1
+        newId = guid
     end
     return newId
 end
