@@ -44,4 +44,4 @@ exports.progress:removeBar(myBar)
 
 ## License
 
-License under consideration...
+Under MIT license
