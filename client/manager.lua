@@ -46,9 +46,9 @@ CreateThread(function ()
                 DrawRect(0.5, height, barWidth, 0.0175, 0, 0, 0, 100)
                 DrawRect(0.5, height, barWidth, 0.01, 255, 255, 255, 55)
                 DrawRect(0.5 - width / 2, height, barWidth - width, 0.01, 255, 255, 255, 170)
-                if barData.params and barData.params.title then
-                    drawText(barData.params.title, vector2((0.5 - barWidth / 2) - 0.0005, height - 0.027), {r = 0, b = 0, g = 0, a = 100})
-                    drawText(barData.params.title, vector2((0.5 - barWidth / 2) - 0.0014, height - 0.029))
+                if barData.options and barData.options.title then
+                    drawText(barData.options.title, vector2((0.5 - barWidth / 2) - 0.0005, height - 0.027), {r = 0, b = 0, g = 0, a = 100})
+                    drawText(barData.options.title, vector2((0.5 - barWidth / 2) - 0.0014, height - 0.029))
                 end
             end
             Wait(0)
@@ -58,21 +58,22 @@ CreateThread(function ()
     end
 end)
 
-function addBar(min, max, state, params)
+function addBar(min, max, state, options)
     local barId = getId()
     barsData[barId] = {
         min = min,
         max = max,
         state = state,
-        params = params
+        options = options
     }
     table.insert(barsOrdered, barId)
     return barId
 end
 
-function updateBar(barId, state)
+function updateBar(barId, state, options)
     if doesBarExist(barId) then
         barsData[barId].state = state
+        barsData[barId].options = options
         return true
     end
     return false
