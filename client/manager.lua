@@ -73,7 +73,9 @@ end
 function updateBar(barId, state, options)
     if doesBarExist(barId) then
         barsData[barId].state = state
-        barsData[barId].options = options
+        if options then
+            barsData[barId].options = options
+        end
         return true
     end
     return false
