@@ -33,22 +33,31 @@ local function drawText(text, position, color)
 end
 
 CreateThread(function ()
-    local barWidth = 0.2
-    local spacing = 0.04
+    local barWidthInPixel = 400
+    local barHeightInPixel = 10
+    local spacingInPixel = 20
+    local shadowOffset = 2
+    local textOffsetX = 3
+    local textOffsetY = 20
     while true do
         if #barsOrdered > 0 then
+            local screenW, screenH = GetActiveScreenResolution()
+            local safeZone = GetSafeZoneSize()
+            local barWidth = barWidthInPixel / screenW
+            local barHeight = barHeightInPixel / screenH
+            local spacing = spacingInPixel / screenH
             for position, barId in pairs(barsOrdered) do
                 local barData = barsData[barId]
                 local barMax = barData.max - barData.min
                 local barState = barData.state - barData.min
-                local height = 0.985 - (spacing * (position - 1))
+                local y = safeZone - (spacing * 2 * (position - 1))
                 local width = ((barMax - barState) * barWidth) / barMax
-                DrawRect(0.5, height, barWidth, 0.0175, 0, 0, 0, 100)
-                DrawRect(0.5, height, barWidth, 0.01, 255, 255, 255, 55)
-                DrawRect(0.5 - width / 2, height, barWidth - width, 0.01, 255, 255, 255, 170)
+                DrawRect(0.5, y, barWidth, barHeight + (8 / screenH), 0, 0, 0, 100) -- background
+                DrawRect(0.5, y, barWidth, barHeight, 255, 255, 255, 55) -- bar background
+                DrawRect(0.5 - width / 2, y, barWidth - width, barHeight, 255, 255, 255, 170) -- bar
                 if barData.options and barData.options.title then
-                    drawText(barData.options.title, vector2((0.5 - barWidth / 2) - 0.0005, height - 0.027), {r = 0, b = 0, g = 0, a = 100})
-                    drawText(barData.options.title, vector2((0.5 - barWidth / 2) - 0.0014, height - 0.029))
+                    drawText(barData.options.title, vector2(((0.5 - textOffsetX / screenW) - barWidth / 2) + (shadowOffset / screenW), y - (barHeightInPixel + textOffsetY - shadowOffset) / screenH), {r = 0, b = 0, g = 0, a = 100}) -- shadow
+                    drawText(barData.options.title, vector2(((0.5 - textOffsetX / screenW) - barWidth / 2), y - (barHeightInPixel + textOffsetY) / screenH)) -- title
                 end
             end
             Wait(0)
