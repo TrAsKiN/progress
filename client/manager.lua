@@ -50,7 +50,7 @@ CreateThread(function ()
                 local barData = barsData[barId]
                 local barMax = barData.max - barData.min
                 local barState = barData.state - barData.min
-                local y = safeZone - (spacing * 2 * (position - 1))
+                local y = safeZone + (barHeight + (8 / screenH)) / 2 - (spacing * 2 * (position - 1))
                 local width = ((barMax - barState) * barWidth) / barMax
                 DrawRect(0.5, y, barWidth, barHeight + (8 / screenH), 0, 0, 0, 100) -- background
                 DrawRect(0.5, y, barWidth, barHeight, 255, 255, 255, 55) -- bar background
