@@ -35,6 +35,7 @@ end
 CreateThread(function ()
     local barWidthInPixel = 400
     local barHeightInPixel = 10
+    local borderInPixel = 4
     local spacingInPixel = 20
     local shadowOffset = 2
     local textOffsetX = 3
@@ -42,7 +43,7 @@ CreateThread(function ()
     while true do
         if #barsOrdered > 0 then
             local screenW, screenH = GetActiveScreenResolution()
-            local safeZone = GetSafeZoneSize()
+            local safeZone = 1.0 - ((1.0 - GetSafeZoneSize()) / 2)
             local barWidth = barWidthInPixel / screenW
             local barHeight = barHeightInPixel / screenH
             local spacing = spacingInPixel / screenH
@@ -50,9 +51,9 @@ CreateThread(function ()
                 local barData = barsData[barId]
                 local barMax = barData.max - barData.min
                 local barState = barData.state - barData.min
-                local y = safeZone + (barHeight + (8 / screenH)) / 2 - (spacing * 2 * (position - 1))
+                local y = safeZone - (barHeight + (borderInPixel * 2 / screenH)) / 2 - (spacing * 2 * (position - 1))
                 local width = ((barMax - barState) * barWidth) / barMax
-                DrawRect(0.5, y, barWidth, barHeight + (8 / screenH), 0, 0, 0, 100) -- background
+                DrawRect(0.5, y, barWidth, barHeight + (borderInPixel * 2 / screenH), 0, 0, 0, 100) -- background
                 DrawRect(0.5, y, barWidth, barHeight, 255, 255, 255, 55) -- bar background
                 DrawRect(0.5 - width / 2, y, barWidth - width, barHeight, 255, 255, 255, 170) -- bar
                 if barData.options and barData.options.title then
